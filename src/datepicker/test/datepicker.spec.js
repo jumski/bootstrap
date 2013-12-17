@@ -1270,6 +1270,28 @@ describe('datepicker directive', function () {
       });
     });
 
+    describe('use with `ng-readonly` directive', function() {
+      // beforeEach(inject(function() {
+      // }));
+
+      it('is a `<table>` element if readonly is false', function() {
+        var wrapElement = $compile('<div><input ng-model="date" ng-readonly="false" datepicker-popup><div>')($rootScope);
+        $rootScope.$digest();
+        assignElements(wrapElement);
+
+        expect(element.prop('tagName')).toBe('TABLE');
+        expect(element.find('thead').find('tr').length).toBe(2);
+      });
+
+      it('should not create a datepicker if readonly is true', function() {
+        var wrapElement = $compile('<div><input ng-model="date" ng-readonly="true" datepicker-popup><div>')($rootScope);
+        $rootScope.$digest();
+        assignElements(wrapElement);
+
+        expect(element.prop('tagName')).not.toBe('TABLE');
+      });
+    });
+
     describe('to invalid input', function() {
       it('sets `ng-invalid`', function() {
         changeInputValueTo(inputEl, 'pizza');
@@ -1312,13 +1334,13 @@ describe('datepicker directive', function () {
         expect($body.children().length).toEqual(bodyLength);
       });
     });
-    
+
     describe('with setting datepickerConfig.showWeeks to false', function() {
       var originalConfig = {};
       beforeEach(inject(function(datepickerConfig) {
         angular.extend(originalConfig, datepickerConfig);
         datepickerConfig.showWeeks = false;
-        
+
         var wrapElement = $compile('<div><input ng-model="date" datepicker-popup><div>')($rootScope);
         $rootScope.$digest();
         assignElements(wrapElement);
@@ -1327,7 +1349,7 @@ describe('datepicker directive', function () {
         // return it to the original state
         angular.extend(datepickerConfig, originalConfig);
       }));
-      
+
       it('changes initial visibility for weeks', function() {
         expect(getLabelsRow().find('th').eq(0).css('display')).toBe('none');
         var tr = element.find('tbody').find('tr');

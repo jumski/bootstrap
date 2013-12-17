@@ -129,7 +129,9 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
     replace: true,
     templateUrl: 'template/datepicker/datepicker.html',
     scope: {
-      dateDisabled: '&'
+      dateDisabled: '&',
+      a: '=readonly',
+      b: '=ngReadonly'
     },
     require: ['datepicker', '?^ngModel'],
     controller: 'DatepickerController',
@@ -138,6 +140,20 @@ angular.module('ui.bootstrap.datepicker', ['ui.bootstrap.position'])
 
       if (!ngModel) {
         return; // do nothing if no ng-model
+      }
+
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+      // i want to get value of ng-readonly or readonly attr/prop
+      // for an element the directive was used on, any tries ends with undefined
+      // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+      if (scope.a || scope.b) {
+        console.log("a = "+scope.a);
+        console.log("b = "+scope.b);
+      }
+
+      if (attrs.ngReadonly) {
+        return; // do nothing if readonly input
       }
 
       // Configuration parameters
